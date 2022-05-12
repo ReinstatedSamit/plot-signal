@@ -20,7 +20,7 @@ create_table()
 
 
 
-broker = '192.168.0.101'
+broker = '192.168.0.103'
 port = 1883
 topic = "Data"
 client_id = ''
@@ -65,18 +65,28 @@ def subscribe(client: mqtt_client):
 
 
         a = ((msg.payload))
+        print("Payload Recieved:")
+        print(a)
+        print("Length of Payload:")
         print(len((msg.payload)))
         #y = np.transpose(x)
         intermediate = (msg.payload);
 
         hexA = intermediate.hex()
-        print(hexA)
-        # print(len(hexA))
+
+        print("Length of converted hexadecimal payload:")
+        print(len(hexA))
+        print("Hexadecimal Converted Payload:")
         print(hexA)
         b = int(hexA[2:6], 16)
-        # print(b)
+        print("A single data extracted from Packet:")
+        print(b)
+        print("Channel no:")
+        print(int(b)>>12)
+        print("Converted Decimal form of the Data:")
+        print((int(b) & 0x0FFF))
         c = int(hexA[0:2], 16)
-        print(c)
+        #print(c)
         hst = 2
         hend = 6
         for m in range(int(len((msg.payload))/4)-2):
@@ -157,7 +167,7 @@ def subscribe(client: mqtt_client):
         x0.clear()
         x3.clear()
         x4.clear()
-        print(len(x4))
+        #print(len(x4))
         x5.clear()
         x6.clear()
         x7.clear()

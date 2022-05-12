@@ -12,8 +12,8 @@ const server = require("http").createServer((req, res) => {
     });
     req.on("end", function () {
       total_number_of_data = parseInt(body);
-      number_of_data = total_number_of_data / 5;
-      increment = Math.ceil(total_number_of_data / 100);
+      number_of_data = total_number_of_data ;
+      increment = Math.ceil(total_number_of_data / 50);
     });
   }
 });
@@ -25,8 +25,8 @@ const io = require("socket.io")(server, {
 });
 
 let total_number_of_data = 10000; // By default shown data number
-let number_of_data = Math.floor(total_number_of_data / 5);
-let increment = 100;
+let number_of_data = Math.floor(total_number_of_data);
+let increment = 1000;
 let n = 0;
 
 // Load data after every 2 seconds
@@ -40,7 +40,7 @@ setInterval(async () => {
 }, 2000);
 
 // 1. listen for socket connections
-io.on("connection", (client) => {
+io.on("connection",  (client) => {
 
   // Rolling Data after every 100 ms
   setInterval(async () => {
@@ -74,7 +74,7 @@ io.on("connection", (client) => {
         x: _.range(n, n + number_of_data, 1),
       },
     });
-  }, 100);
+  }, 300);
 });
 
 server.listen(8080);

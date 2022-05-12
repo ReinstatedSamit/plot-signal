@@ -23,7 +23,7 @@ const loadDataFromSQL = (number) => {
 
           // Fetch rows
           db.all(
-            `SELECT * FROM CH${channel[i]} ORDER BY ID DESC LIMIT ${number}`,
+            `SELECT * FROM (SELECT * FROM CH${channel[i]} ORDER BY ID DESC LIMIT ${number}) ORDER BY ID ASC`,
             [],
             async (err, rows) => {
               if (err) return console.error(err.message);
