@@ -12,7 +12,7 @@ const server = require("http").createServer((req, res) => {
     });
     req.on("end", function () {
       total_number_of_data = parseInt(body);
-      number_of_data = total_number_of_data ;
+      number_of_data = total_number_of_data /4;    // One fourth of total data
       increment = Math.ceil(total_number_of_data / 50);
     });
   }
@@ -24,19 +24,24 @@ const io = require("socket.io")(server, {
   transports: ["websocket", "polling"],
 });
 
-let total_number_of_data = 10000; // By default shown data number
-let number_of_data = Math.floor(total_number_of_data);
-let increment = 1000;
+let total_number_of_data = 20000; // By default shown data number
+let number_of_data = Math.floor(total_number_of_data/4);  // One fourth of total data
+let increment = 100;
 let n = 0;
 
 // Load data after every 2 seconds
 let datas = loadDataFromSQL(total_number_of_data);
 setInterval(async () => {
-  datas = loadDataFromSQL(total_number_of_data);
+ let newData = await loadDataFromSQL(total_number_of_data);
+ 
+ if(newData != datas){
+  datas =newData;
+}
 
-  if (n + number_of_data > total_number_of_data - 25) {
-    n = 0;
-  }
+ if ((n + number_of_data > total_number_of_data - 25)) {
+  n =  0;
+}
+
 }, 2000);
 
 // 1. listen for socket connections
@@ -80,32 +85,8 @@ io.on("connection",  (client) => {
 server.listen(8080);
 
 const increaseNumber = () => {
-  if (n + number_of_data + 20 < datas.channel0?.length) {
-    n += increment;
-  }
-
-  // if (n1 + number_of_data + 20 < datas.channel0?.length) {
-  //   n1 += increment;
-  // }
-  // if (n2 + number_of_data + 20 < datas.channel0?.length) {
-  //   n2 += increment;
-  // }
-  // if (n3 + number_of_data + 20 < datas.channel3?.length) {
-  //   n3 += increment;
-  // }
-  // if (n4 + number_of_data + 20 < datas.channel4?.length) {
-  //   n4 += increment;
-  // }
-  // if (n5 + number_of_data + 20 < datas.channel5?.length) {
-  //   n5 += increment;
-  // }
-  // if (n6 + number_of_data + 20 < datas.channel6?.length) {
-  //   n6 += increment;
-  // }
-  // if (n7 + number_of_data + 20 < datas.channel7?.length) {
-  //   n7 += increment;
-  // }
-  // if (n8 + number_of_data + 20 < datas.channel3?.length) {
-  //   n8 += increment;
+  n += increment;
+  // if (n + number_of_data + 20 < datas.channel0?.length) {
+  //   n += increment;
   // }
 };

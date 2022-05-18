@@ -6,7 +6,7 @@ export default function DisplayPlots({ data }) {
   useEffect(() => {
     setPauseManager([false, false, false, false, false, false, false, false]);
   }, []);
-
+  
   return (
     <div>
       <div className='row plots'>

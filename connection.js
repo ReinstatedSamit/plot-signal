@@ -17,17 +17,25 @@ const loadDataFromSQL = (number) => {
     channel0: [],
     channel3: [],
   };
-
+  let id =10
   for (let i = 0; i < channel.length; i++) {
     let count = 0;
-
+    
           // Fetch rows
           db.all(
             `SELECT * FROM (SELECT * FROM CH${channel[i]} ORDER BY ID DESC LIMIT ${number}) ORDER BY ID ASC`,
             [],
             async (err, rows) => {
               if (err) return console.error(err.message);
-    
+              if(rows[50]?.ID > 10){
+                id = await rows[50].ID
+              }
+              
+              if(id == rows[50]?.ID){
+                // return [false, id]
+                
+              }
+
               // Do something with rows
               let rowsValue = await rows.map(
                 (value) => value[`Channel${channel[i]}`]
